@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Eric Seymour, PhD">
+  <meta name="dcterms.date" content="2017-06-14">
+  <title>SQL and Databases for Research</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; } /* Keyword */
+code > span.dt { color: #dfdfbf; } /* DataType */
+code > span.dv { color: #dcdccc; } /* DecVal */
+code > span.bn { color: #dca3a3; } /* BaseN */
+code > span.fl { color: #c0bed1; } /* Float */
+code > span.ch { color: #dca3a3; } /* Char */
+code > span.st { color: #cc9393; } /* String */
+code > span.co { color: #7f9f7f; } /* Comment */
+code > span.ot { color: #efef8f; } /* Other */
+code > span.al { color: #ffcfaf; } /* Alert */
+code > span.fu { color: #efef8f; } /* Function */
+code > span.er { color: #c3bf9f; } /* Error */
+code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code > span.sc { color: #dca3a3; } /* SpecialChar */
+code > span.vs { color: #cc9393; } /* VerbatimString */
+code > span.ss { color: #cc9393; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #f0dfaf; } /* ControlFlow */
+code > span.op { color: #f0efd0; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code > span.at { } /* Attribute */
+code > span.do { color: #7f9f7f; } /* Documentation */
+code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+  <h1 class="title">SQL and Databases for Research</h1>
+  <p class="author">Eric Seymour, PhD</p>
+  <p class="date">June 14, 2017</p>
+</section>
+
+<section id="overview" class="slide level1">
+<h1>Overview</h1>
+<ul>
+<li>Overview of databases for research</li>
+<li>Overview of SQL syntax</li>
+<li>Creating databases</li>
+<li>Using databases and SQL with property data</li>
+<li>Spatial databases and spatial queries</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="database-overview">Database Overview</h2>
+<h3 id="aka-why-not-excel">(aka why not Excel)</h3>
+<ul>
+<li class="fragment">DBs best for storing and working with large datasets</li>
+<li class="fragment">DBs keep related data files in a single place</li>
+<li class="fragment">DBs enable let you link different files using common fields</li>
+<li class="fragment">DBs enforce data integrity, e.g., only numbers in number column</li>
+<li class="fragment">SQL helps with research reproducibility (reusable code)</li>
+</ul>
+</section>
+<section id="database-design" class="slide level1">
+<h1>Database Design</h1>
+<ul>
+<li>DBs contain tables</li>
+<li>Tables consist of rows and columns</li>
+<li>Column have explicitly defined datatypes, e.g.,
+<ul>
+<li>Text</li>
+<li>Integer</li>
+<li>Real (floating point data)</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="database-software">Database Software</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MS Access</td>
+<td style="text-align: left;">File based</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SQLite</td>
+<td style="text-align: left;">File based</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MS SQL Server</td>
+<td style="text-align: left;">Server based</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MySQL (Oracle)</td>
+<td style="text-align: left;">Server based</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PostgreSQL</td>
+<td style="text-align: left;">Server based</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sqlite" class="slide level1">
+<h1>SQLite</h1>
+<ul>
+<li>Free open source software</li>
+<li>Used can interact w/ DB through command line</li>
+<li>We will use <a href="https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/">SQLite Manager plugin for Firefox</a></li>
+</ul>
+</section>
+<section id="sql-syntax" class="slide level1">
+<h1>SQL Syntax</h1>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> field1, field2   <span class="co">/* specify fields */</span>
+<span class="kw">FROM</span> myTable            <span class="co">/* specify fields */</span>
+<span class="kw">WHERE</span> condition = <span class="st">&#39;met&#39;</span> <span class="co">/* specify fields */</span>
+<span class="kw">ORDER</span> <span class="kw">BY</span> field2;        <span class="co">/* specify fields */</span></code></pre></div>
+<!-- 
+@[1](Select fields you want returned)
+@[2](Select the table or tables you are querying)
+@[3](Optional clause to filter results) -->
+</section>
+<section id="making-the-slides" class="slide level1">
+<h1>Making the slides</h1>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">pandoc</span> -t revealjs <span class="dt">\\</span>
+<span class="ex">--highlight-style</span>=zenburn <span class="dt">\\</span>
+<span class="ex">-s</span> -o myslides.html PITCHME.md</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> sqlite3 <span class="im">as</span> sql
+
+con <span class="op">=</span> sql.<span class="ex">connect</span>(db)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="sql-functions">SQL Functions</h2>
+<ul>
+<li>SQL can returns summary information</li>
+<li>MIN, MAX, COUNT, AVG, SUM</li>
+<li>You need to wrap the field in the function</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*), <span class="fu">AVG</span>(price), <span class="fu">MIN</span>(price), <span class="fu">MAX</span>(price)
+<span class="kw">FROM</span> cars;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h3 id="changing-the-unit-of-analysis">Changing the unit of analysis</h3>
+<ul>
+<li>MCM data includes tract number</li>
+<li>We can use these data to find tracts w/ the highest or lowest percentage of residential structures in good condition</li>
+<li>Need to GROUP BY tract</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">head</span> --lines=5 data.csv</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h3 id="more-code">More Code</h3>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.trt <span class="kw">AS</span> tract, B.good, A.structures, 
+( B.good * <span class="fl">1.0</span> / A.structures )  * <span class="dv">100</span> <span class="kw">as</span> prct
+<span class="kw">FROM</span> 
+    (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> structures, GEOID10_Tract <span class="kw">AS</span> trt
+    <span class="kw">FROM</span> MCM 
+    <span class="kw">WHERE</span> Condition!=<span class="st">&#39;&#39;</span> 
+    <span class="kw">GROUP</span> <span class="kw">BY</span> GEOID10_Tract) <span class="kw">AS</span> A 
+<span class="kw">LEFT</span> <span class="kw">JOIN</span>
+    (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> good, GEOID10_Tract <span class="kw">AS</span> trt 
+    <span class="kw">FROM</span> MCM 
+    <span class="kw">WHERE</span> Condition=<span class="st">&#39;good&#39;</span> 
+    <span class="kw">GROUP</span> <span class="kw">BY</span> GEOID10_Tract) <span class="kw">AS</span> B 
+<span class="kw">ON</span> A.trt = B.trt
+<span class="kw">ORDER</span> <span class="kw">BY</span> ( B.good * <span class="fl">1.0</span> / A.structures )  * <span class="dv">100</span>
+<span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
+</section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+              { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
