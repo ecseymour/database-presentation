@@ -72,20 +72,26 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
   <p class="date">June 14, 2017</p>
 </section>
 
-<section id="overview" class="slide level1">
-<h1>Overview</h1>
+<section id="welcome" class="slide level1">
+<h1>WELCOME</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="workshop-overview">Workshop Overview</h2>
 <ul>
-<li>Overview of databases for research</li>
+<li>Overview of databases</li>
 <li>Overview of SQL syntax</li>
-<li>Creating databases</li>
+<li>Creating databases with real world data</li>
 <li>Using databases and SQL with property data</li>
 <li>Spatial databases and spatial queries</li>
 </ul>
 </section>
+<section id="overview-sql-basics" class="slide level1">
+<h1>Overview &amp; SQL Basics</h1>
+</section>
 <section class="slide level1">
 
 <h2 id="database-overview">Database Overview</h2>
-<h3 id="aka-why-not-excel">(aka why not Excel)</h3>
 <ul>
 <li class="fragment">DBs best for storing and working with large datasets</li>
 <li class="fragment">DBs keep related data files in a single place</li>
@@ -94,17 +100,14 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 <li class="fragment">SQL helps with research reproducibility (reusable code)</li>
 </ul>
 </section>
-<section id="database-design" class="slide level1">
-<h1>Database Design</h1>
+<section class="slide level1">
+
+<h2 id="database-design">Database Design</h2>
 <ul>
-<li>DBs contain tables</li>
-<li>Tables consist of rows and columns</li>
-<li>Column have explicitly defined datatypes, e.g.,
-<ul>
-<li>Text</li>
-<li>Integer</li>
-<li>Real (floating point data)</li>
-</ul></li>
+<li>DBs contain one or more tables</li>
+<li>Tables consist of columns (fields) and rows (observations)</li>
+<li>Columns have explicitly defined column types (text, numbers, etc.)</li>
+<li>Tables can be created from preexisting  files (usually CSV files)</li>
 </ul>
 </section>
 <section class="slide level1">
@@ -141,33 +144,157 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 </tbody>
 </table>
 </section>
-<section id="sqlite" class="slide level1">
-<h1>SQLite</h1>
+<section class="slide level1">
+
+<h2 id="sqlite">SQLite</h2>
 <ul>
-<li>Free open source software</li>
-<li>Used can interact w/ DB through command line</li>
-<li>We will use <a href="https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/">SQLite Manager plugin for Firefox</a></li>
+<li>Does not require a server process</li>
+<li>No configuration required</li>
+<li>self-contained, no external dependencies</li>
+<li>works on all platforms</li>
 </ul>
 </section>
-<section id="sql-syntax" class="slide level1">
-<h1>SQL Syntax</h1>
-<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> field1, field2   <span class="co">/* specify fields */</span>
-<span class="kw">FROM</span> myTable            <span class="co">/* specify fields */</span>
-<span class="kw">WHERE</span> condition = <span class="st">&#39;met&#39;</span> <span class="co">/* specify fields */</span>
-<span class="kw">ORDER</span> <span class="kw">BY</span> field2;        <span class="co">/* specify fields */</span></code></pre></div>
-<!-- 
-@[1](Select fields you want returned)
-@[2](Select the table or tables you are querying)
-@[3](Optional clause to filter results) -->
-</section>
-<section id="making-the-slides" class="slide level1">
-<h1>Making the slides</h1>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">pandoc</span> -t revealjs <span class="dt">\\</span>
-<span class="ex">--highlight-style</span>=zenburn <span class="dt">\\</span>
-<span class="ex">-s</span> -o myslides.html PITCHME.md</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> sqlite3 <span class="im">as</span> sql
+<section class="slide level1">
 
-con <span class="op">=</span> sql.<span class="ex">connect</span>(db)</code></pre></div>
+<h2 id="sqlite-usage">SQLite Usage</h2>
+<ul>
+<li>Command line interface (CLI)</li>
+<li><a href="https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/">Firefox SQLite Manager plugin</a></li>
+<li>Plugin needs to be installed for workshop</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="creating-tables">Creating Tables</h2>
+<ul>
+<li>SQLite Manager simplifies table creation with wizard</li>
+<li>Table creation requires a CREATE TABLE statement using SQL</li>
+<li>These statements define the table name, columns, and column data types</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="simple-table-creation">Simple Table Creation</h2>
+<ul>
+<li>Open SQLite Manager</li>
+<li>Select Databse -&gt; New In-Memory Database</li>
+<li>Enter code in dialog box in 'Execute SQL' tab, hit RUN SQL</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> cars (
+<span class="kw">id</span>      <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+make    TEXT,
+model   TEXT,
+price   <span class="dt">INTEGER</span>);</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="add-data">Add data</h2>
+<ul>
+<li>Remove CREATE code</li>
+<li>Copy statement below into dialog box, hit RUN SQL</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> cars <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="st">&#39;Acura&#39;</span>, <span class="st">&#39;NSX&#39;</span>, <span class="dv">47045</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> cars <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="st">&#39;Audi&#39;</span>, <span class="st">&#39;A8&#39;</span>, <span class="dv">63890</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> cars <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="st">&#39;BMW&#39;</span>, <span class="st">&#39;X1&#39;</span>, <span class="dv">108900</span>);</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="view-table">View Table</h2>
+<p>This query returns all columns and rows</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> *    <span class="co">/* &#39;*&#39; means ALL columns */</span>
+<span class="kw">FROM</span> cars;  </code></pre></div>
+</section>
+<section id="sql-query-basics" class="slide level1">
+<h1>SQL Query Basics</h1>
+</section>
+<section class="slide level1">
+
+<h3 id="sql-structured-query-language">SQL: Structured Query Language</h3>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> field1, field2   <span class="co">/* specify columns */</span>
+<span class="kw">FROM</span> myTable;           <span class="co">/* specify tables   */</span>
+<span class="kw">WHERE</span> condition = <span class="st">&#39;met&#39;</span> <span class="co">/* filter (optional) */</span></code></pre></div>
+<ul>
+<li>SELECT and FROM are mandatory elements</li>
+<li>Many optional clauses, including WHERE</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="operators-in-where-clause">Operators in WHERE Clause</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Operator</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">=</td>
+<td style="text-align: left;">Equal</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;&gt;</td>
+<td style="text-align: left;">Not equal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&gt;(=)</td>
+<td style="text-align: left;">Greater than (or equal)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;(=)</td>
+<td style="text-align: left;">Less than (or equal)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level1">
+
+<h2 id="where-clause-cont.">WHERE Clause, Cont.</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Operator</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BETWEEN</td>
+<td style="text-align: left;">Between an inclusive range</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LIKE</td>
+<td style="text-align: left;">Search for a pattern</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IN</td>
+<td style="text-align: left;">To specify multiple possible values for a colum</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level1">
+
+<h2 id="sql-challenge">SQL Challenge!</h2>
+<p>Find make, model, price for cars that cost 50,000 or more</p>
+<div class="fragment">
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> make, model, price
+<span class="kw">FROM</span> cars
+<span class="kw">WHERE</span> price &gt;= <span class="dv">50000</span>;</code></pre></div>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="order-results">Order Results</h2>
+<ul>
+<li>Use ORDER clause to sort results by field(s)</li>
+<li>Default is ASC values; can also specify DESC</li>
+<li>Let's ORDER results of entire table by price</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> *
+<span class="kw">FROM</span> cars
+<span class="kw">ORDER</span> <span class="kw">BY</span> price <span class="kw">DESC</span>;</code></pre></div>
 </section>
 <section class="slide level1">
 
@@ -182,17 +309,525 @@ con <span class="op">=</span> sql.<span class="ex">connect</span>(db)</code></pr
 </section>
 <section class="slide level1">
 
-<h3 id="changing-the-unit-of-analysis">Changing the unit of analysis</h3>
+<h2 id="sql-functions-cont.">SQL Functions, cont.</h2>
 <ul>
-<li>MCM data includes tract number</li>
-<li>We can use these data to find tracts w/ the highest or lowest percentage of residential structures in good condition</li>
-<li>Need to GROUP BY tract</li>
+<li>Many string/text manipulation functions</li>
+<li>Let's find all cars whose manufacturer starts with 'A'</li>
+<li>Add SQL SUBSTR function to query</li>
+<li>Takes 2 arguments: position, length</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">head</span> --lines=5 data.csv</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> *
+<span class="kw">FROM</span> cars
+<span class="kw">WHERE</span> <span class="fu">SUBSTR</span>(make,<span class="dv">1</span>,<span class="dv">1</span>) = <span class="st">&#39;A&#39;</span>
+<span class="kw">ORDER</span> <span class="kw">BY</span> make;</code></pre></div>
 </section>
 <section class="slide level1">
 
-<h3 id="more-code">More Code</h3>
+<h2 id="like-function">LIKE Function</h2>
+<ul>
+<li>We could use LIKE for same purpose</li>
+<li>'%' is the wildcard character</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> *
+<span class="kw">FROM</span> cars
+<span class="kw">WHERE</span> make <span class="kw">LIKE</span> <span class="st">&#39;A%&#39;</span>
+<span class="kw">ORDER</span> <span class="kw">BY</span> make;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="sql-core-functions">SQL Core Functions</h2>
+<ul>
+<li>Many functions for operating on text and numbers</li>
+<li>Useful for cleaning data and customizing output</li>
+<li><a href="https://sqlite.org/lang_corefunc.html">Full list for SQLite core functions</a></li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="managing-sql-output">Managing SQL output</h2>
+<ul>
+<li>SQLite Manager allows you to copy results as CSV to clipboard</li>
+<li>Usually have to click on each row of data (or first and last)</li>
+<li>Can also copy data as SQL INSERT statement that may be used to create a new table</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="create-table-from-query">Create table from query</h2>
+<ul>
+<li>In some cases you may want to make a new table from a query</li>
+<li>Rather than supply explicit VALUES, supply a SELECT statement</li>
+<li>This table has all cars whose make starts with 'A'</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> a_cars <span class="kw">AS</span> 
+<span class="kw">SELECT</span> *
+<span class="kw">FROM</span> cars
+<span class="kw">WHERE</span> make <span class="kw">LIKE</span> <span class="st">&#39;A%&#39;</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="deleting-tables">Deleting Tables</h2>
+<p>Not Reversible-keep backups!</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">DROP</span> <span class="kw">TABLE</span> a_cars;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="tip-of-the-sql-database-iceberg">Tip of the SQL/ Database Iceberg</h2>
+<ul>
+<li>You now know how to create and query a database table</li>
+<li>Everything else builds on these fundamental ideas</li>
+<li>Are there questions before we move on?</li>
+</ul>
+</section>
+<section id="table-join" class="slide level1">
+<h1>Table Join</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="adding-a-second-table">Adding a second table</h2>
+<p>Create new table of safety ratings for cars</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> ratings (
+<span class="kw">id</span>      <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+make    TEXT,
+model   TEXT,
+rating  TEXT);</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="add-data-1">Add data</h2>
+<p>Cars have hypothetical A to F ratings</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT</span> <span class="kw">INTO</span> ratings <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="st">&#39;Acura&#39;</span>, <span class="st">&#39;NSX&#39;</span>, <span class="st">&#39;C&#39;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> ratings <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="st">&#39;Audi&#39;</span>, <span class="st">&#39;A8&#39;</span>, <span class="st">&#39;A&#39;</span>);
+<span class="kw">INSERT</span> <span class="kw">INTO</span> ratings <span class="kw">VALUES</span> (<span class="dv">3</span>, <span class="st">&#39;BMW&#39;</span>, <span class="st">&#39;X1&#39;</span>, <span class="st">&#39;B&#39;</span>);</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="basic-table-joins">Basic Table Joins</h2>
+<ul>
+<li>Join tables on common field</li>
+<li>We have several fields in common in this case</li>
+<li>Join on id field in both tables</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.make, A.model, B.rating
+<span class="kw">FROM</span> cars <span class="kw">AS</span> A <span class="kw">JOIN</span> ratings <span class="kw">AS</span> B <span class="co">/* AS alias */</span>
+<span class="kw">ON</span> A.id = B.id; <span class="co">/* specify field to join on */</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="basic-table-joins-cont">Basic Table Joins, Cont</h2>
+<ul>
+<li>If tables lack common id number, find alternative</li>
+<li>Join on make AND model</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.make, A.model, B.rating
+<span class="kw">FROM</span> cars <span class="kw">AS</span> A <span class="kw">JOIN</span> ratings <span class="kw">AS</span> B
+<span class="kw">ON</span> A.make = B.make <span class="kw">AND</span> A.model = B.model;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="types-of-joins-in-sqlite">Types of Joins in SQLite</h2>
+<ul>
+<li>Inner Join (Default)</li>
+</ul>
+<p>Returns all rows from multiple tables where the join condition is met</p>
+<div class="fragment">
+<ul>
+<li>LEFT OUTER JOIN</li>
+</ul>
+<p>Returns <strong>all</strong> rows from the LEFT-hand table specified in the ON condition and only those rows from the other table where the joined fields are equal</p>
+</div>
+</section>
+<section class="slide level1">
+
+<figure>
+<img src="figures/inner_join.png" alt="Inner Join" /><figcaption>Inner Join</figcaption>
+</figure>
+</section>
+<section class="slide level1">
+
+<figure>
+<img src="figures/outer_join.png" alt="Left Outer Join" /><figcaption>Left Outer Join</figcaption>
+</figure>
+</section>
+<section class="slide level1">
+
+<h2 id="join-comparison">Join comparison</h2>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">/* add another data */</span>
+<span class="kw">INSERT</span> <span class="kw">INTO</span> cars <span class="kw">VALUES</span> (<span class="dv">4</span>, <span class="st">&#39;Ford&#39;</span>,  <span class="st">&#39;Fusion&#39;</span>, <span class="dv">72000</span>);
+
+<span class="co">/* inner join */</span> 
+<span class="kw">SELECT</span> A.make, A.model, B.rating
+<span class="kw">FROM</span> cars <span class="kw">AS</span> A <span class="kw">JOIN</span> ratings <span class="kw">AS</span> B
+<span class="kw">ON</span> A.make = B.make <span class="kw">AND</span> A.model = B.model;
+
+<span class="co">/* left outer join */</span>
+<span class="kw">SELECT</span> A.make, A.model, B.rating
+<span class="kw">FROM</span> cars <span class="kw">AS</span> A <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> ratings <span class="kw">AS</span> B
+<span class="kw">ON</span> A.make = B.make <span class="kw">AND</span> A.model = B.model;</code></pre></div>
+</section>
+<section id="working-with-property-data" class="slide level1">
+<h1>Working with property data</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="overview">Overview</h2>
+<ul>
+<li>We will now put our SQL skills to use querying Detroit property records</li>
+<li>We will create tables from publicly available data</li>
+<li>We will perform basic, but powerful queries on these data</li>
+</ul>
+</section>
+<section id="motor-city-mapping" class="slide level1">
+<h1>Motor City Mapping</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="motor-city-mapping-survey">Motor City Mapping Survey</h2>
+<ul>
+<li>Citywide parcel-by-parcel survey of property conditions 2013-2014</li>
+<li>Results viewable at <a href="https://motorcitymapping.org/">motorcitymapping.org</a></li>
+<li>Data available at <a href="http://portal.datadrivendetroit.org/datasets/7cfed5afb7654e2495ef4c1ead320aa5_0">Data Driven Detroit</a></li>
+<li>Spreadsheet located in data folder: Motor_City_Mapping_Winter_201314_Certified_Results.csv</li>
+<li>Let's review fields using Metadata_MCM_CertifiedResults_Winter2014.xls</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="inspecting-and-loading-data">Inspecting and Loading Data</h2>
+<ul>
+<li>What are the fields?</li>
+<li>What do the data elements look like?</li>
+<li>How many rows?</li>
+<li>Command line tools like <em>head</em> and <em>wc</em> and perfect for these tasks</li>
+<li>Mac OSX and Linux users have these tools installed, just open a terminal</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="inspecting-data">Inspecting data</h2>
+<p>Display top 5 lines</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">head</span> --lines=5 Motor_City_Mapping_Winter_201314_Certified_Results.csv
+
+<span class="ex">OBJECTID</span>,D3_SurveyParcelID,CityParcelID2013,AddCombo,Address_Number,Address_Direction,Street,Zip,PCount,Blext_ID,User_ID,Reviewer_ID,Time_Surveyed,Updated_At,Status,Photo_URL,Structure,Use_,Condition,Occupancy,Needs_Boarding,Fire,Dumping,Units,Improved,Maintained,PublicUse,Notes,GEOID10_Tract,NAMELSAD10_Tract,GEOID10_Block,NAME10_Block,GeoID10_BG
+<span class="ex">3001</span>,13016242.020,13016242.020,20560 KEYSTONE,20560, ,KEYSTONE,48234,1,309677,2936,3127,2014-01-24T18:18:02.000Z,2014-01-27T17:08:38.000Z,1,https://wdwot.s3.amazonaws.com/blexts/000/309/677/blext.jpg,yes,residential,good,occupied,no,no,no,1 unit,,,,,26163506700,Census Tract 5067,261635067001009,Block 1009,261635067001
+<span class="ex">3002</span>,13016242.021L,13016242.021L,20570 KEYSTONE,20570, ,KEYSTONE,48234,1,309706,2936,3127,2014-01-24T18:18:28.000Z,2014-01-27T17:08:31.000Z,1,https://wdwot.s3.amazonaws.com/blexts/000/309/706/blext.jpg,yes,residential,good,occupied,no,no,no,1 unit,,,,,26163506700,Census Tract 5067,261635067001009,Block 1009,261635067001
+<span class="ex">3003</span>,13022754.001,13022754.001,18027 REVERE,18027, ,REVERE,48234,1,248512,2730,3061,2014-01-21T15:23:01.000Z,2014-02-03T15:45:19.000Z,1,https://wdwot.s3.amazonaws.com/blexts/000/248/512/blext.jpg,yes,residential,good,occupied,no,no,no,2-3 units,,,,,26163507000,Census Tract 5070,261635070003028,Block 3028,261635070003
+<span class="ex">3004</span>,13022754.002,13022754.002,18019 REVERE,18019, ,REVERE,48234,1,248415,2730,3061,2014-01-21T15:21:51.000Z,2014-02-03T15:47:52.000Z,1,https://wdwot.s3.amazonaws.com/blexts/000/248/415/blext.jpg,yes,residential,fair,occupied,no,no,no,1 unit,,,,,26163507000,Census Tract 5070,261635070003028,Block 3028,261635070003</code></pre></div>
+<p>Display line count</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">wc</span> -l Motor_City_Mapping_Winter_201314_Certified_Results.csv
+
+<span class="ex">380121</span> Motor_City_Mapping_Winter_201314_Certified_Results.csv</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="connecting-to-workshop-db">Connecting to Workshop DB</h2>
+<ul>
+<li>SQLite Manger has a wizard for importing CSV</li>
+<li>Database -&gt; Import</li>
+<li>Dropdown menus for selecting data type for each column</li>
+<li>We will use pre-made table to future-proof presentation</li>
+<li>Database -&gt; Connect Database, navigate to sql_tutorial.sqlite</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="explore-data">Explore Data</h2>
+<p>How many records in MCM table?</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) 
+<span class="kw">FROM</span> MCM;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="group-by">GROUP BY</h2>
+<ul>
+<li>Aggregate records by each value of a given field</li>
+<li>Best for fields with few unique values</li>
+<li>Structure is a binary field</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">Structure</span>, <span class="fu">COUNT</span>(*) 
+<span class="kw">FROM</span> MCM 
+<span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">Structure</span> 
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">Count</span>(*) <span class="kw">DESC</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="query-results">Query Results</h2>
+<ul>
+<li>Returns count for all values of structure, including '' and NULL values</li>
+<li>Empty string suggests records not surveyed</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Structure</th>
+<th style="text-align: right;">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">&quot;yes&quot;</td>
+<td style="text-align: right;">261158</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&quot;no&quot;</td>
+<td style="text-align: right;">112069</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&quot;&quot;</td>
+<td style="text-align: right;">6322</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level1">
+
+<h2 id="filtering-results">Filtering Results</h2>
+<ul>
+<li>Data contains field for time surveyed</li>
+<li>Filter rows to exclude those where time surveyed is an empty string</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">Structure</span>, <span class="fu">COUNT</span>(*) 
+<span class="kw">FROM</span> MCM 
+<span class="kw">WHERE</span> Time_Surveyed &lt;&gt; <span class="st">&#39;&#39;</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">Structure</span>
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">Count</span>(*) <span class="kw">DESC</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="check-data">Check data</h2>
+<p>Find addresses of properties where there is no property condition and time surveyed is an empty string</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">oid</span>, AddCombo 
+<span class="kw">FROM</span> MCM
+<span class="kw">WHERE</span> <span class="kw">Structure</span> = <span class="st">&#39;&#39;</span>
+<span class="kw">AND</span> Time_Surveyed &lt;&gt; <span class="st">&#39;&#39;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="updating-records">Updating Records</h2>
+<ul>
+<li>We can use SQL to update records based on new information</li>
+<li>I did not perform these UPDATEs in the sample db</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">UPDATE</span> MCM
+<span class="kw">SET</span> <span class="kw">Structure</span> = <span class="st">&#39;yes&#39;</span> <span class="co">/* text must be in &#39;quotes&#39; */</span>
+<span class="kw">WHERE</span> <span class="kw">oid</span> = <span class="dv">167214</span>; <span class="co">/* specify record(s) to update */</span>
+
+<span class="kw">UPDATE</span> MCM
+<span class="kw">SET</span> <span class="kw">Structure</span> = <span class="st">&#39;no&#39;</span>
+<span class="kw">WHERE</span> <span class="kw">oid</span> = <span class="dv">168113</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="examining-property-conditions">Examining Property Conditions</h2>
+<ul>
+<li>'Condition' is short for 'structure condition'</li>
+<li>Do all records with 'condition' also have a structure?</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">Structure</span>, Condition, <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> MCM
+<span class="kw">WHERE</span> Time_Surveyed &lt;&gt; <span class="st">&#39;&#39;</span> 
+<span class="kw">AND</span> Condition &lt;&gt; <span class="st">&#39;&#39;</span> 
+<span class="kw">AND</span> <span class="kw">Structure</span> &lt;&gt; <span class="st">&#39;&#39;</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">Structure</span>, Condition
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">Structure</span>, <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="examining-property-conditions-1">Examining Property Conditions</h2>
+<ul>
+<li>Some properties were likely miscoded as either having a structure or conditon rating</li>
+<li>One possibility is to update all records having a condition rating as also having a structure</li>
+<li>All public property datasets suffer from these types of inconsistencies and errors</li>
+<li>Use SQL to efficiently and rigorously explore data and diagnose issues</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="examining-property-conditions-2">Examining Property Conditions</h2>
+<ul>
+<li>Let us assume records with condition ratings are all structures (may be wrong)</li>
+<li>How many records have condition ratings?</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">FROM</span> MCM
+<span class="kw">WHERE</span> Condition &lt;&gt; <span class="st">&#39;&#39;</span> <span class="kw">AND</span> Use_=<span class="st">&#39;residential&#39;</span> ;</code></pre></div>
+<div class="fragment">
+<p>243,631</p>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="calculating-percentages">Calculating percentages</h2>
+<ul>
+<li>Divide COUNT by result from last slide to get percentage for each condition rating</li>
+<li>Multiply COUNT by 1.0 to get floating point value</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Condition, 
+( <span class="fu">COUNT</span>(*) * <span class="fl">1.0</span> / <span class="dv">243631</span> ) * <span class="dv">100</span> <span class="kw">AS</span> <span class="kw">Share</span>, 
+<span class="fu">COUNT</span>(*) <span class="kw">AS</span> <span class="fu">Count</span> 
+<span class="kw">FROM</span> MCM
+<span class="kw">WHERE</span> Condition &lt;&gt; <span class="st">&#39;&#39;</span> <span class="kw">AND</span> Use_=<span class="st">&#39;residential&#39;</span> 
+<span class="kw">GROUP</span> <span class="kw">BY</span> Condition
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="rounding-numbers">Rounding Numbers</h2>
+<ul>
+<li>ROUND percentages for neater table</li>
+<li>Takes the value and the number of digits as arguments</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Condition, 
+<span class="fu">ROUND</span>(( <span class="fu">COUNT</span>(*) * <span class="fl">1.0</span> / <span class="dv">243631</span> ) * <span class="dv">100</span>, <span class="dv">2</span>) <span class="kw">AS</span> <span class="kw">Share</span>, 
+<span class="fu">COUNT</span>(*) <span class="kw">AS</span> <span class="fu">Count</span>
+<span class="kw">FROM</span> MCM
+<span class="kw">WHERE</span> Condition &lt;&gt; <span class="st">&#39;&#39;</span> <span class="kw">AND</span> Use_=<span class="st">&#39;residential&#39;</span> 
+<span class="kw">GROUP</span> <span class="kw">BY</span> Condition
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="subqueries">Subqueries</h2>
+<p>Include the denominator as the result of a subquery</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Condition, 
+( <span class="fu">COUNT</span>(*) * <span class="fl">1.0</span> / res_struc ) * <span class="dv">100</span> <span class="kw">AS</span> <span class="kw">Share</span>, 
+<span class="fu">COUNT</span>(*) <span class="kw">AS</span> <span class="fu">Count</span> 
+<span class="kw">FROM</span> MCM <span class="kw">JOIN</span> (
+    <span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">as</span> res_struc <span class="kw">FROM</span> MCM
+    <span class="kw">WHERE</span> Condition &lt;&gt; <span class="st">&#39;&#39;</span> <span class="kw">AND</span> Use_=<span class="st">&#39;residential&#39;</span>)
+<span class="kw">WHERE</span> Condition &lt;&gt; <span class="st">&#39;&#39;</span> <span class="kw">AND</span> Use_=<span class="st">&#39;residential&#39;</span> 
+<span class="kw">GROUP</span> <span class="kw">BY</span> Condition
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="cross-joins">Cross joins</h2>
+<ul>
+<li>JOINs w/out ON result in a CROSS JOIN</li>
+<li>This produces the cartesian product of both tables</li>
+<li>That means every combination of table A and B</li>
+<li>This is only desirable in special cases</li>
+<li>In the code above, we wanted 'res_struc' to appear in the same row as the counts for each condition rating</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="residential-properties-with-structures">Residential Properties with Structures</h2>
+<p>What share of residential properties have structures?</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">Structure</span>, <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> MCM
+<span class="kw">WHERE</span> <span class="kw">Structure</span> &lt;&gt; <span class="st">&#39;&#39;</span> 
+<span class="kw">AND</span> Use_ = <span class="st">&#39;residential&#39;</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">Structure</span>;</code></pre></div>
+<div class="fragment">
+<p>This is inaccurate. There are far more vacant residential lots in Detroit. Survey did not correctly identify land use of vacant lots.</p>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="residential-properties-with-structures-1">Residential Properties with Structures</h2>
+<p>What is the recorded use of vacant lots?</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Use_, <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> MCM
+<span class="kw">WHERE</span> <span class="kw">Structure</span> = <span class="st">&#39;no&#39;</span> 
+<span class="kw">GROUP</span> <span class="kw">BY</span> Use_
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></div>
+<div class="fragment">
+<p>Most are unknown</p>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="other-info-in-mcm-survey-results">Other Info in MCM Survey Results</h2>
+<ul>
+<li>Information on dumping</li>
+<li>Whether properties need to be boarded</li>
+<li>Do you have questions of the data we can answer using SQL?</li>
+</ul>
+</section>
+<section id="changing-the-unit-of-analysis" class="slide level1">
+<h1>Changing the Unit of Analysis</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="from-property-to-tract">From property to tract</h2>
+<ul>
+<li>MCM data include tract number</li>
+<li>Find tract percentage of residential structures in good condition</li>
+<li>Need to GROUP BY tract</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> GEOID10_Tract, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> good
+<span class="kw">FROM</span> MCM 
+<span class="kw">WHERE</span> Condition=<span class="st">&#39;good&#39;</span> 
+<span class="kw">GROUP</span> <span class="kw">BY</span> GEOID10_Tract
+<span class="kw">ORDER</span> <span class="kw">BY</span> good
+<span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
+</section>
+<section id="take-a-deep-breath" class="slide level1">
+<h1>Take a deep breath</h1>
+</section>
+<section class="slide level1">
+
+<p>% of residential structures in good condition</p>
+<div class="sourceCode" id="mycode"><table class="sourceCode sql numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="sourceCode"><pre><code class="sourceCode sql"><span class="kw">SELECT</span> A.trt <span class="kw">AS</span> tract, B.good, A.structures, 
+( B.good * <span class="fl">1.0</span> / A.structures )  * <span class="dv">100</span> <span class="kw">as</span> prct
+<span class="kw">FROM</span> 
+    (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> structures, GEOID10_Tract <span class="kw">AS</span> trt
+    <span class="kw">FROM</span> MCM 
+    <span class="kw">WHERE</span> Condition!=<span class="st">&#39;&#39;</span> 
+    <span class="kw">GROUP</span> <span class="kw">BY</span> GEOID10_Tract) <span class="kw">AS</span> A 
+<span class="kw">LEFT</span> <span class="kw">JOIN</span>
+    (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> good, GEOID10_Tract <span class="kw">AS</span> trt 
+    <span class="kw">FROM</span> MCM 
+    <span class="kw">WHERE</span> Condition=<span class="st">&#39;good&#39;</span> 
+    <span class="kw">GROUP</span> <span class="kw">BY</span> GEOID10_Tract) <span class="kw">AS</span> B 
+<span class="kw">ON</span> A.trt = B.trt
+<span class="kw">ORDER</span> <span class="kw">BY</span> ( B.good * <span class="fl">1.0</span> / A.structures )  * <span class="dv">100</span>
+<span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></td></tr></table></div>
+</section>
+<section class="slide level1">
+
+<h2 id="explanation">Explanation</h2>
+<ul>
+<li>line 2: calculates percent of structures in good condition per tract</li>
+<li>lines 4-7: subquery returning the count of records where condition is not null per tract</li>
+<li>lines 9-12: subquery returning the count of records where condition is good per tract</li>
+<li>line 14: returns the results in ascending order</li>
+<li>line 15: limits the results to the 10 tracts w/ the lowest percentages</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="views">Views</h2>
+<ul>
+<li>We can store results of query as a VIEW</li>
+<li>Veiws dynamically returns elements of SQL query behind VIEW</li>
+<li>Views change when underlying data changes</li>
+<li>Views function like a table and may be included in joins</li>
+<li>Views help clean up busy code</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="create-view">Create view</h2>
+<ul>
+<li>View -&gt; Create View</li>
+<li>Store code below as VIEW names 'prct_good'</li>
+</ul>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.trt <span class="kw">AS</span> tract, B.good, A.structures, 
 ( B.good * <span class="fl">1.0</span> / A.structures )  * <span class="dv">100</span> <span class="kw">as</span> prct
 <span class="kw">FROM</span> 
@@ -208,6 +843,581 @@ con <span class="op">=</span> sql.<span class="ex">connect</span>(db)</code></pr
 <span class="kw">ON</span> A.trt = B.trt
 <span class="kw">ORDER</span> <span class="kw">BY</span> ( B.good * <span class="fl">1.0</span> / A.structures )  * <span class="dv">100</span>
 <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
+</section>
+<section id="tax-foreclosure-records" class="slide level1">
+<h1>Tax foreclosure records</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="detroit-tax-foreclosure-records">Detroit Tax Foreclosure Records</h2>
+<ul>
+<li>Data downloaded from <a href="http://portal.datadrivendetroit.org/datasets/9438afd734d348a694c42a28c4103731_0">Data Driven Detroit</a></li>
+<li>Contain Detroit tax foreclosure records 2002-2013</li>
+<li>Field descriptions available <a href="http://datadrivendetroit.org/web_ftp/motorcitymapping/Metadata/WCT_TaxForeclosures/ArchivalTaxForeclosure_Metadata_Final_12152014.xls">Data Driven Detroit</a></li>
+<li>Data pre-loaded into workshop DB in 'ATF' table (Archived Tax Foreclosures)</li>
+<li>Take a moment to examine the data</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="linking-tables">Linking Tables</h2>
+<ul>
+<li class="fragment">MCM and ATF share parcel id</li>
+<li class="fragment">Locate the parcel field for each table and note the name</li>
+<li class="fragment">MCM.CityParcelID2013 and ATF.ParcelNumb</li>
+<li class="fragment">Let's find the number of matching records between these two tables</li>
+</ul>
+</section>
+<section id="indexes" class="slide level1">
+<h1>Indexes</h1>
+<ul>
+<li>Useful when joining large tables</li>
+<li>Speeds DB lookup of values in JOIN fields</li>
+<li>May be created for single or multiple fields</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> myTable(field_to_index);</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">INDEX</span> mcm_pid_idx <span class="kw">ON</span> MCM(CityParcelID2013);
+<span class="kw">CREATE</span> <span class="kw">INDEX</span> atf_pid_idx <span class="kw">ON</span> ATF(ParcelNumb);</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="join-code">JOIN code</h2>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">/* How many in ATF? */</span>
+<span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">FROM</span> ATF;
+
+<span class="co">/* How many match a record in MCM? */</span>
+<span class="kw">SELECT</span> <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> ATF <span class="kw">AS</span> A <span class="kw">JOIN</span> MCM <span class="kw">AS</span> B
+<span class="kw">ON</span> A.ParcelNumb = B.CityParcelID2013;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="join-atf-to-mcm">JOIN ATF to MCM</h2>
+<ul>
+<li>Find condition of 2013 tax foreclosures</li>
+<li>Restrict to residential structures</li>
+</ul>
+<div class="sourceCode" id="mycode"><table class="sourceCode sql numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="sourceCode"><pre><code class="sourceCode sql"><span class="kw">SELECT</span> B.Condition, <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> ATF <span class="kw">AS</span> A <span class="kw">JOIN</span> MCM <span class="kw">AS</span> B
+<span class="kw">ON</span> A.ParcelNumb = B.CityParcelID2013 
+<span class="kw">WHERE</span> B.Use_=<span class="st">&#39;residential&#39;</span> <span class="kw">AND</span> B.Condition&lt;&gt;<span class="st">&#39;&#39;</span>
+<span class="kw">AND</span> A.FC_2013 = <span class="dv">1</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> B.Condition
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></td></tr></table></div>
+</section>
+<section class="slide level1">
+
+<p>% of 2013 residential tax foreclosures by condition</p>
+<div class="sourceCode" id="mycode"><table class="sourceCode sql numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="sourceCode"><pre><code class="sourceCode sql"><span class="kw">SELECT</span> B.Condition, <span class="fu">COUNT</span>(*), 
+( <span class="fu">COUNT</span>(*) * <span class="fl">1.0</span> / denom ) * <span class="dv">100</span> <span class="kw">AS</span> prct
+<span class="kw">FROM</span> ATF <span class="kw">AS</span> A <span class="kw">JOIN</span> MCM <span class="kw">AS</span> B
+<span class="kw">ON</span> A.ParcelNumb = B.CityParcelID2013 
+<span class="kw">JOIN</span> (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> denom
+    <span class="kw">FROM</span> ATF <span class="kw">AS</span> A <span class="kw">JOIN</span> MCM <span class="kw">AS</span> B
+    <span class="kw">ON</span> A.ParcelNumb = B.CityParcelID2013
+    <span class="kw">WHERE</span> B.Use_=<span class="st">&#39;residential&#39;</span> <span class="kw">AND</span> B.Condition&lt;&gt;<span class="st">&#39;&#39;</span>
+    <span class="kw">AND</span> A.FC_2013 = <span class="dv">1</span>)
+<span class="kw">WHERE</span> B.Use_=<span class="st">&#39;residential&#39;</span> <span class="kw">AND</span> B.Condition&lt;&gt;<span class="st">&#39;&#39;</span>
+<span class="kw">AND</span> A.FC_2013 = <span class="dv">1</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> B.Condition
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></td></tr></table></div>
+</section>
+<section class="slide level1">
+
+<ul>
+<li>Find occupancy status of 2013 residential tax foreclosures</li>
+<li>Restrict to residential structures</li>
+</ul>
+<div class="sourceCode" id="mycode"><table class="sourceCode sql numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="sourceCode"><pre><code class="sourceCode sql"><span class="kw">SELECT</span> B.Occupancy, <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> ATF <span class="kw">AS</span> A <span class="kw">JOIN</span> MCM <span class="kw">AS</span> B
+<span class="kw">ON</span> A.ParcelNumb = B.CityParcelID2013
+<span class="kw">WHERE</span> B.Use_=<span class="st">&#39;residential&#39;</span> <span class="kw">AND</span> A.FC_2013 = <span class="dv">1</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> B.Occupancy
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></td></tr></table></div>
+</section>
+<section id="property-sale-data" class="slide level1">
+<h1>Property Sale Data</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="detroit-sales-history">Detroit Sales History</h2>
+<ul>
+<li>Data found at <a href="https://data.detroitmi.gov/Property-Parcels/Property-Sales-History/w8m7-eib7">Detroit Open Data</a></li>
+<li>Contains ''sales price, buyer, and seller of properties sold in the city of Detroit''</li>
+<li>Let's download, inspect, clean, and load data into database</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="data-inspection">Data inspection</h2>
+<ul>
+<li>Sale price has <code>$</code></li>
+<li>Needs to be removed to add price as an INTEGER field</li>
+<li>SQLite stores dates in YYYY-MM-DD format. This is not how the records are stored in the file</li>
+<li>A good tool for cleaning these data is <a href="%7Bhttp://openrefine.org/">OpenRefine</a></li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="openrefine">OpenRefine</h2>
+<ul>
+<li>Navigate to sales data from within OpenRefine</li>
+<li>Open data into new project</li>
+<li>From the dropdown menu for SALEPRICE, select EDIT CELLS -&gt; TRANSFORM</li>
+<li>Enter the code below to remove <code>$</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">value.replace(<span class="st">&#39;$&#39;</span>,<span class="st">&#39;&#39;</span>)
+python</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="fixing-dates">Fixing dates</h2>
+<ul>
+<li>Change date to SQLite format: `YYYY-MM-DD'</li>
+<li>Check results and export as new CSV file</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">value[<span class="dv">6</span>,<span class="dv">10</span>]<span class="op">+</span><span class="st">&#39;-&#39;</span><span class="op">+</span>value[<span class="dv">0</span>,<span class="dv">2</span>]<span class="op">+</span><span class="st">&#39;-&#39;</span><span class="op">+</span>value[<span class="dv">3</span>,<span class="dv">5</span>]</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="import-data-to-table">Import Data to Table</h2>
+<ul>
+<li>Import the cleaned data as a new table</li>
+<li>Use SQLite Manager import wizard</li>
+<li>Specify data type for each field</li>
+<li>Rename table as 'detroit_sales'</li>
+<li>Be sure to specify that first row contains field names</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="explore-sales-data">Explore Sales Data</h2>
+<ul>
+<li>Check the import worked as intended</li>
+<li>Select first 5 rows of data to check fields and data line up</li>
+<li>Select count to make sure all data imported properly</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="annual-average-sale-price">Annual Average Sale Price</h2>
+<ul>
+<li>If your data have YEAR, you can GROUP BY YEAR</li>
+<li>If your data have DATE, you can extract the year from the date field by taking the first four characters</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">SUBSTR</span>(SALEDATE,<span class="dv">1</span>,<span class="dv">4</span>), 
+<span class="fu">ROUND</span>(<span class="fu">AVG</span>(SALEPRICE), <span class="dv">0</span>), 
+<span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> detroit_sales
+<span class="kw">GROUP</span> <span class="kw">BY</span> <span class="fu">SUBSTR</span>(SALEDATE,<span class="dv">1</span>,<span class="dv">4</span>); </code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="parsing-date-fields">Parsing Date Fields</h2>
+<ul>
+<li>You can also use SQLite strftime() function</li>
+<li>It takes two arguments:
+<ul>
+<li>a special argument for format to return</li>
+<li>the field containing the data info</li>
+</ul></li>
+<li>See <a href="https://sqlite.org/lang_datefunc.html">here for more</a></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> strftime(<span class="st">&#39;%Y&#39;</span>, SALEDATE) , 
+<span class="fu">ROUND</span>(<span class="fu">AVG</span>(SALEPRICE), <span class="dv">0</span>), <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> detroit_sales
+<span class="kw">GROUP</span> <span class="kw">BY</span> strftime(<span class="st">&#39;%Y&#39;</span>, SALEDATE);</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="property-classification-codes">Property Classification Codes</h2>
+<ul>
+<li>Descriptions found <a href="https://data.detroitmi.gov/api/views/w8m7-eib7/files/cd11b104-6cf6-4f88-9305-e7d5e0392b35?download=true&amp;filename=CityPropertyClassCodes.pdf">here</a></li>
+<li>Residential properties have values between 400 and 499</li>
+<li>Restrict queries to residential only</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> detroit_sales
+<span class="kw">WHERE</span> <span class="fu">SUBSTR</span>(PROPCLASS,<span class="dv">1</span>,<span class="dv">1</span>) = <span class="st">&#39;4&#39;</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="sales-types">Sales Types</h2>
+<ul>
+<li>Some sales are market sales, some are transfers</li>
+<li>We can use SalesInstr and SALETERMS to filter for market sales</li>
+<li>What terms are used for residential sales?</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> SalesInstr, <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> detroit_sales
+<span class="kw">WHERE</span> <span class="fu">SUBSTR</span>(PROPCLASS,<span class="dv">1</span>,<span class="dv">1</span>) = <span class="st">&#39;4&#39;</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> SalesInstr
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="results">Results</h2>
+<ul>
+<li>'PTA' is a Property Transfer Affidavit</li>
+<li>This is not a deed-it goes to the assessor</li>
+<li>Find the annual average price for residential WD (warranty deed) transactions and plot them</li>
+<li>Copy results and paste into spreadsheet software</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> strftime(<span class="st">&#39;%Y&#39;</span>, SALEDATE), 
+<span class="fu">ROUND</span>(<span class="fu">AVG</span>(SALEPRICE), <span class="dv">0</span>), <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> detroit_sales
+<span class="kw">WHERE</span> <span class="fu">SUBSTR</span>(PROPCLASS,<span class="dv">1</span>,<span class="dv">1</span>) = <span class="st">&#39;4&#39;</span>
+<span class="kw">AND</span> SalesInstr = <span class="st">&#39;WD&#39;</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> strftime(<span class="st">&#39;%Y&#39;</span>, SALEDATE);</code></pre></div>
+</section>
+<section class="slide level1">
+
+<figure>
+<img src="figures/sales_price.png" />
+</figure>
+</section>
+<section id="spatial-databases" class="slide level1">
+<h1>Spatial Databases</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="spatial-databases-1">Spatial Databases</h2>
+<ul>
+<li>We can use coordinate/geometry data to make spatial tables</li>
+<li>SQLite -&gt; Spatialite</li>
+<li>Special spatial SQL syntax for querying for relationships based on location</li>
+<li>QGIS makes it easy to create and work w/ Spatialite DBs</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="spatial-db-fundamentals">Spatial DB Fundamentals</h2>
+<ul>
+<li>Spatial data have three types of geometry: points, lines, polygons</li>
+<li>Polygons may contains points</li>
+<li>Points may be within polygons</li>
+<li>Census geographies are polygons</li>
+<li>Properties with simple X, Y coordinates are points</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="spatialite-tables-from-shapefiles">Spatialite Tables from Shapefiles</h2>
+<ul>
+<li>Open QGIS</li>
+<li>Navigate to Census Tracts 2010 folder</li>
+<li>Drag 'geo_export.shp' into QGIS window</li>
+<li>Right-click layer name in table of contents in QGIS, select SAVE AS</li>
+<li>Under FORMAT, select SPATIALITE</li>
+<li>Change CRS (coordinate reference system) to 2898</li>
+<li>Rename table 'detroit_tracts10'</li>
+<li>Save to workshop folder</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="coordinate-reference-systems">Coordinate Reference Systems</h2>
+<ul>
+<li>Many different CRSs</li>
+<li>Each suited to different locations on the Earth's surface</li>
+<li>Each suited to different spatial scales, e.g., continents and states</li>
+<li>CRS 2898 is tailored to SE Michigan</li>
+<li>Distance in this CRS measured in <strong>feet</strong></li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="connecting-to-databases">Connecting to Databases</h2>
+<ul>
+<li>Select feather icon</li>
+<li>Find database you created in last step</li>
+<li>Select tracts table</li>
+<li>Tracts should now be displayed in QGIS</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="import-mcm-into-spatialite">Import MCM into Spatialite</h2>
+<ol type="1">
+<li>Navigate to Motor City Mapping folder</li>
+<li>Drag 'Motor_City_Mapping.shp' into QGIS window</li>
+<li>Right-click layer name in table of contents in QGIS, select SAVE AS</li>
+<li>Under FORMAT, select SPATIALITE</li>
+<li>Change CRC (coordinate reference system) to 2898</li>
+<li>Rename table 'MCM'</li>
+<li>Save into BD created when saving tract table</li>
+</ol>
+</section>
+<section class="slide level1">
+
+<h2 id="qgis-db-manager">QGIS DB Manager</h2>
+<ul>
+<li>From the top menu, select Database, then DB Manager</li>
+<li>Find and connect to our new spatial DB</li>
+<li>Expand the DB and select any one table</li>
+<li>Press F2 to open the SQL Window</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="spatial-sql">Spatial SQL</h2>
+<p>We can query Spatialite DBs w/ special spatial parameters. 'ST' means Space-Time</p>
+<ul>
+<li>ST_Contains(geom1, geom2)</li>
+<li>ST_Within(geom1, geom2)</li>
+<li>ST_Distance(geom1, geom2)</li>
+<li>ST_Intersects(geom1, geom2)</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="spatial-sql-cont.">Spatial SQL, Cont.</h2>
+<p><a href="http://www.gaia-gis.it/spatialite-2.4.0/spatialite-sql-2.4.html">Follow link for complete list of spatial functions</a></p>
+</section>
+<section id="find-properties-in-tracts" class="slide level1">
+<h1>Find Properties in Tracts</h1>
+</section>
+<section class="slide level1">
+
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.tractce_10, <span class="fu">COUNT</span>(*), A.geometry
+<span class="kw">FROM</span> detroit_tracts10 <span class="kw">AS</span> A, mcm <span class="kw">AS</span> B
+<span class="kw">WHERE</span> st_contains(A.geometry, B.geometry)
+<span class="kw">AND</span> B.ROWID <span class="kw">IN</span> ( 
+    <span class="kw">SELECT</span> <span class="dt">ROWID</span> 
+    <span class="kw">FROM</span> SpatialIndex 
+    <span class="kw">WHERE</span> f_table_name=<span class="ot">&quot;mcm&quot;</span>
+    <span class="kw">AND</span> search_frame=A.geometry)
+<span class="kw">GROUP</span> <span class="kw">BY</span> A.tractce_10;</code></pre></div>
+<ul>
+<li>line 3 is spatial join syntax</li>
+<li>lines 4-8 invoke spatial index, not mandatory, but speeds processing time</li>
+</ul>
+</section>
+<section id="find-average-sale-price-by-tract" class="slide level1">
+<h1>Find Average Sale Price by Tract</h1>
+</section>
+<section class="slide level1">
+
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.geoid_10, <span class="fu">AVG</span>(C.SALEPRICE) <span class="kw">AS</span> avg_price, A.geometry
+<span class="kw">FROM</span> detroit_tracts10 <span class="kw">AS</span> A <span class="kw">JOIN</span> mcm <span class="kw">AS</span> B
+<span class="kw">ON</span> A.geoid_10 = B.geoid10_tr
+<span class="kw">JOIN</span> detroit_sales <span class="kw">AS</span> C <span class="kw">ON</span> B.cityparcel = C.PARCELNO
+<span class="kw">WHERE</span> <span class="fu">SUBSTR</span>(C.SALEDATE,<span class="dv">1</span>,<span class="dv">4</span>) <span class="kw">IN</span> (<span class="st">&#39;2013&#39;</span>,<span class="st">&#39;2014&#39;</span>,<span class="st">&#39;2015&#39;</span>)
+<span class="kw">AND</span> <span class="fu">SUBSTR</span>(C.PROPCLASS,<span class="dv">1</span>,<span class="dv">1</span>)=<span class="st">&#39;4&#39;</span> <span class="co">/* residential only */</span>
+<span class="kw">AND</span> C.SalesInstr=<span class="st">&#39;WD&#39;</span> <span class="co">/* warranty deeds */</span>
+<span class="kw">GROUP</span> <span class="kw">BY</span> A.geoid_<span class="dv">10</span>
+<span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) &gt;= <span class="dv">5</span> <span class="co">/* only tracts w/ 5+ sales */</span> ;</code></pre></div>
+<ul>
+<li>line 5 IN allows selection of multiple values</li>
+<li>line 9 HAVING filters GROUP BY results</li>
+</ul>
+</section>
+<section id="spatial-analysis-using-census-data" class="slide level1">
+<h1>Spatial analysis using census data</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="detroit-tract-level-tenure">Detroit tract level tenure</h2>
+<ul>
+<li>Collect 5-year ACS data for all tracts in Wayne County from <a href="https://factfinder.census.gov/bkmk/table/1.0/en/ACS/11_5YR/B25003/0500000US26163.14000">American Fact Finder</a></li>
+<li>Import into 'workshop_spatal.sqlite'</li>
+<li>Replace '.' in field names with '_'</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="ot">&quot;ACS_11_5YR_B25003&quot;</span> (
+<span class="ot">&quot;GEO_id&quot;</span> <span class="dt">INTEGER</span>, 
+<span class="ot">&quot;GEO_id2&quot;</span> <span class="dt">INTEGER</span>,
+<span class="ot">&quot;GEO_label&quot;</span> TEXT,
+<span class="ot">&quot;HD01_VD01&quot;</span> <span class="dt">INTEGER</span>,
+<span class="ot">&quot;HD02_VD01&quot;</span> <span class="dt">INTEGER</span>
+<span class="ot">&quot;HD01_VD02&quot;</span> <span class="dt">INTEGER</span>
+<span class="ot">&quot;HD02_VD02&quot;</span> <span class="dt">INTEGER</span>
+<span class="ot">&quot;HD01_VD03&quot;</span> <span class="dt">INTEGER</span>
+<span class="ot">&quot;HD02_VD03&quot;</span> <span class="dt">INTEGER</span>)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="join-to-census-tract-polygons">Join to census tract polygons</h2>
+<ul>
+<li>Calculate homeownership rate</li>
+<li>Divide homeowner households by total households</li>
+<li>Metadata in 'ACS_11_5YR_B25003_metadata.csv'</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.geoid_10, 
+( B.HD01_VD02 * <span class="fl">1.0</span> / B.HD01_VD01 ) * <span class="dv">100</span> <span class="kw">AS</span> HO_rate,
+A.geometry
+<span class="kw">FROM</span> detroit_tracts10 <span class="kw">AS</span> A <span class="kw">JOIN</span> ACS_11_5YR_B25003 <span class="kw">AS</span> B
+<span class="kw">ON</span> A.geoid_10 = B.GEO_id2
+<span class="kw">WHERE</span> B.HD01_VD01 &gt; <span class="dv">0</span>; <span class="co">/* remove tracts w/ 0 households */</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="make-choropleth-map-of-homeownership-rate">Make choropleth map of homeownership rate</h2>
+<ul>
+<li>Layers created from DB Manager in QGIS return all values as <em>string</em></li>
+<li>Need to use the expression dialog in QGIS to convert to <em>real</em></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"> to_real( <span class="ot">&quot;HO_rate&quot;</span> )</code></pre></div>
+</section>
+<section class="slide level1">
+
+<figure>
+<img src="figures/ho_rate.png" alt="Homeownership Rate" /><figcaption>Homeownership Rate</figcaption>
+</figure>
+</section>
+<section id="tax-foreclosure-choropleth-map" class="slide level1">
+<h1>Tax foreclosure choropleth map</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="steps">Steps</h2>
+<ul>
+<li><a href="http://portal.datadrivendetroit.org/datasets/9438afd734d348a694c42a28c4103731_0">Download shapefile of dataset from Data Driven Detroit</a></li>
+<li>Save data into 'workshop_spatial.db'</li>
+<li>Set CRS 2898 like rest of spatial tables in db</li>
+<li>Note these are <em>point</em> data</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="count-foreclosures-by-tract">Count foreclosures by tract</h2>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.tractce_10, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> foreclosure, A.geometry
+<span class="kw">FROM</span> detroit_tracts10 <span class="kw">AS</span> A, tax_foreclosures <span class="kw">AS</span> B
+<span class="kw">WHERE</span> st_contains(A.geometry, B.geometry)
+<span class="kw">AND</span> B.ROWID <span class="kw">IN</span> ( 
+    <span class="kw">SELECT</span> <span class="dt">ROWID</span> 
+    <span class="kw">FROM</span> SpatialIndex 
+    <span class="kw">WHERE</span> f_table_name=<span class="ot">&quot;tax_foreclosures&quot;</span>
+    <span class="kw">AND</span> search_frame=A.geometry)
+<span class="kw">GROUP</span> <span class="kw">BY</span> A.tractce_10;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h3 id="tax-foreclosure-concentration">Tax foreclosure concentration</h3>
+<ul>
+<li>Join count of parcels per tract to normalize count</li>
+<li>Multiply by 1,000 to get rate</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> A.geoid_10, 
+<span class="fu">COUNT</span>(*) * <span class="fl">1.0</span> / C.parcels * <span class="dv">1000</span> <span class="kw">AS</span> rate,
+A.geometry
+<span class="kw">FROM</span> detroit_tracts10 <span class="kw">AS</span> A, tax_foreclosures <span class="kw">AS</span> B
+<span class="kw">JOIN</span> 
+    (<span class="kw">SELECT</span> geoid10_tr, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> parcels <span class="co">/* subquery of MCM */</span>
+    <span class="kw">FROM</span> mcm
+    <span class="kw">GROUP</span> <span class="kw">BY</span> geoid10_tr) <span class="kw">AS</span> C
+<span class="kw">ON</span> A.geoid_10 = C.geoid10_tr
+<span class="kw">WHERE</span> st_contains(A.geometry, B.geometry)
+<span class="kw">AND</span> B.ROWID <span class="kw">IN</span> ( 
+    <span class="kw">SELECT</span> <span class="dt">ROWID</span> 
+    <span class="kw">FROM</span> SpatialIndex 
+    <span class="kw">WHERE</span> f_table_name=<span class="ot">&quot;tax_foreclosures&quot;</span>
+    <span class="kw">AND</span> search_frame=A.geometry)
+<span class="kw">GROUP</span> <span class="kw">BY</span> A.geoid_<span class="dv">10</span>
+<span class="kw">HAVING</span> C.parcels &gt; <span class="dv">0</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<figure>
+<img src="figures/fc_rate.png" alt="Tax Foreclosure Rate" /><figcaption>Tax Foreclosure Rate</figcaption>
+</figure>
+</section>
+<section id="property-ownership-analysis" class="slide level1">
+<h1>Property Ownership Analysis</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="detroit-property-ownership">Detroit Property Ownership</h2>
+<ul>
+<li>Shapefile from <a href="https://data.detroitmi.gov/Property-Parcels/Parcel-Map/fxkw-udwf">Detroit Open Data Portal</a></li>
+<li>Contains polygon for every parcel in Detroit</li>
+<li>Time period reported to be March 2016</li>
+<li>Drag .shp file into QGIS and save into spatialite db</li>
+<li>We will find largest property owners</li>
+<li>And location of Fannie Mae's properties</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="largest-property-owners">Largest Property Owners</h2>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> taxpayer1, <span class="fu">COUNT</span>(*)
+<span class="kw">FROM</span> ownership
+<span class="kw">GROUP</span> <span class="kw">BY</span> taxpayer1
+<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">COUNT</span>(*) <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">7</span>;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">taxpayer</th>
+<th style="text-align: right;">COUNT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">DETROIT LAND BANK AUTHORITY</td>
+<td style="text-align: right;">85479</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CITY OF DETROIT-P&amp;DD</td>
+<td style="text-align: right;">5964</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MI LAND BANK FAST TRACK AUTH</td>
+<td style="text-align: right;">5878</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HANTZ WOODLANDS LLC</td>
+<td style="text-align: right;">1917</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TAXPAYER</td>
+<td style="text-align: right;">1235</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CITY OF DETROIT - P&amp;DD</td>
+<td style="text-align: right;">1058</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CITY OF DETROIT</td>
+<td style="text-align: right;">950</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HUD</td>
+<td style="text-align: right;">782</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level1">
+
 </section>
     </div>
   </div>
