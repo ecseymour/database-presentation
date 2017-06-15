@@ -72,9 +72,6 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
   <p class="date">June 14, 2017</p>
 </section>
 
-<section id="welcome" class="slide level1">
-<h1>WELCOME</h1>
-</section>
 <section class="slide level1">
 
 <h2 id="workshop-overview">Workshop Overview</h2>
@@ -107,7 +104,7 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 <li>DBs contain one or more tables</li>
 <li>Tables consist of columns (fields) and rows (observations)</li>
 <li>Columns have explicitly defined column types (text, numbers, etc.)</li>
-<li>Tables can be created from preexisting  files (usually CSV files)</li>
+<li>Tables can be created from preexisting text files (usually CSV files)</li>
 </ul>
 </section>
 <section class="slide level1">
@@ -211,8 +208,8 @@ price   <span class="dt">INTEGER</span>);</code></pre></div>
 
 <h3 id="sql-structured-query-language">SQL: Structured Query Language</h3>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> field1, field2   <span class="co">/* specify columns */</span>
-<span class="kw">FROM</span> myTable;           <span class="co">/* specify tables   */</span>
-<span class="kw">WHERE</span> condition = <span class="st">&#39;met&#39;</span> <span class="co">/* filter (optional) */</span></code></pre></div>
+<span class="kw">FROM</span> myTable            <span class="co">/* specify tables   */</span>
+<span class="kw">WHERE</span> condition=<span class="st">&#39;met&#39;</span>;  <span class="co">/* filter (optional) */</span></code></pre></div>
 <ul>
 <li>SELECT and FROM are mandatory elements</li>
 <li>Many optional clauses, including WHERE</li>
@@ -1416,8 +1413,36 @@ A.geometry
 </tbody>
 </table>
 </section>
+<section id="additional-resources" class="slide level1">
+<h1>additional resources</h1>
+</section>
 <section class="slide level1">
 
+<h2 id="data-science-ecosystems">Data science ecosystems</h2>
+<ul>
+<li>Pull data from DBs in R, Python</li>
+<li>Greatly expands data analysis capacity</li>
+<li>With Python you can iterate over DB</li>
+<li>With Python and R you can directly make charts and figures</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="web-links">Web links</h2>
+<ul>
+<li><a href="https://www.w3schools.com/sql/default.asp">W3schools SQL course</a></li>
+<li><a href="https://blog.codinghorror.com/a-visual-explanation-of-sql-joins/">A visual explanation of table joins</a></li>
+<li><a href="https://schoolofdata.org/2013/03/26/using-sql-for-lightweight-data-analysis/">Using SQLite for lightweight data analysis</a></li>
+<li><a href="http://docs.qgis.org/2.0/en/docs/training_manual/databases/spatialite.html">Working with spatialite in QGIS</a></li>
+<li><a href="http://zetcode.com/db/sqlitepythontutorial/">SQLite Python tutorial</a></li>
+<li><a href="https://www.r-bloggers.com/r-and-sqlite-part-1/">R and SQLite</a></li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="reveal-from-markdown">Reveal from markdown</h2>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">pandoc</span> -t revealjs --highlight-style=zenburn -s -o myslides.html PITCHME_o
+<span class="ex">verview.mdown</span></code></pre></div>
 </section>
     </div>
   </div>

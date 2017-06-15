@@ -32,7 +32,7 @@
 * DBs contain one or more tables
 * Tables consist of columns (fields) and rows (observations)
 * Columns have explicitly defined column types (text, numbers, etc.)
-* Tables can be created from preexisting \textbf{text} files (usually CSV files)
+* Tables can be created from preexisting text files (usually CSV files)
 
 ---
 
@@ -124,8 +124,8 @@ FROM cars;
 
 ```sql
 SELECT field1, field2   /* specify columns */
-FROM myTable;           /* specify tables   */
-WHERE condition = 'met' /* filter (optional) */
+FROM myTable            /* specify tables   */
+WHERE condition='met';  /* filter (optional) */
 ```
 
 * SELECT and FROM are mandatory elements
@@ -1311,3 +1311,36 @@ LIMIT 7;
 
 
 ---
+
+
+# additional resources
+
+---
+
+## Data science ecosystems
+
+* Pull data from DBs in R, Python
+* Greatly expands data analysis capacity
+* With Python you can iterate over DB
+* With Python and R you can directly make charts and figures
+
+---
+
+## Web links
+
+* [W3schools SQL course](https://www.w3schools.com/sql/default.asp)
+* [A visual explanation of table joins](https://blog.codinghorror.com/a-visual-explanation-of-sql-joins/)
+* [Using SQLite for lightweight data analysis](https://schoolofdata.org/2013/03/26/using-sql-for-lightweight-data-analysis/)
+* [Working with spatialite in QGIS](http://docs.qgis.org/2.0/en/docs/training_manual/databases/spatialite.html)
+* [SQLite Python tutorial](http://zetcode.com/db/sqlitepythontutorial/)
+* [R and SQLite](https://www.r-bloggers.com/r-and-sqlite-part-1/)
+
+
+---
+
+## Reveal from markdown
+
+```bash
+pandoc -t revealjs --highlight-style=zenburn -s -o myslides.html PITCHME_o
+verview.mdown
+```
